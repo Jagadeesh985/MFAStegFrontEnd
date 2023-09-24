@@ -16,11 +16,11 @@ class SignUpForm extends Component {
       password: { name: "", message: "", op: "" },
       confirmPassword: { name: "", message: "", op: "" },
       verifyInput: false,
-      res:{op:"",message:""}
+      res: { op: "", message: "" },
     };
   }
   // componentDidCatch(){
-    
+
   // }
   validateUsername = (event) => {
     let name = "userName";
@@ -133,12 +133,12 @@ class SignUpForm extends Component {
         break;
       case "firstName":
         if (val.length === 0) {
-            element.message = "warn";
-            element.op ="First Name must be filled";
-          } else {
-            element.message = "success";
-            element.op = "";
-          }
+          element.message = "warn";
+          element.op = "First Name must be filled";
+        } else {
+          element.message = "success";
+          element.op = "";
+        }
         this.setState({
           firstName: element,
         });
@@ -146,7 +146,7 @@ class SignUpForm extends Component {
       case "lastName":
         if (val.length === 0) {
           element.message = "warn";
-          element.op ="Last Name must be filled";
+          element.op = "Last Name must be filled";
         } else {
           element.message = "success";
           element.op = "";
@@ -185,45 +185,53 @@ class SignUpForm extends Component {
     }
   }
   validateInputs = () => {
-    let { userName, email, firstName,lastName, password, confirmPassword } = this.state;
-    if(userName.message === 'success' && email.message ==='success' && firstName.message ==='success' && lastName.message ==='success'
-    && password.message ==='success' && confirmPassword.message ==='success' ){
+    let { userName, email, firstName, lastName, password, confirmPassword } =
+      this.state;
+    if (
+      userName.message === "success" &&
+      email.message === "success" &&
+      firstName.message === "success" &&
+      lastName.message === "success" &&
+      password.message === "success" &&
+      confirmPassword.message === "success"
+    ) {
       // console.log('false');
       // this.setState({
       //   verifyInput: true
       // })
-      return false
+      return false;
+    } else {
+      return true;
     }
-    else{
-      return true
-    }
-  }
+  };
   submitData = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:8000/api/register/",{
-        username:this.state.userName.name,
-        email:this.state.email.name,
-        first_name:this.state.firstName.name,
-        last_name:this.state.lastName.name,
-        password:this.state.password.name
+      .post("http://localhost:8000/api/register/", {
+        username: this.state.userName.name,
+        email: this.state.email.name,
+        first_name: this.state.firstName.name,
+        last_name: this.state.lastName.name,
+        password: this.state.password.name,
       })
-      .then(res => {
+      .then((res) => {
         console.log(res);
         console.log(res.data);
         // alert(res.data.msg);
         let m = res.data.data ? res.data.data : res.data.username[0];
-        let msg = {op:m,message:res.data.message}
+        let msg = { op: m, message: res.data.message };
         this.setState({
-          res : msg
-        })
-      }
-      )
+          res: msg,
+        });
+      })
+      .catch((error) => {
+        alert(error.name);
+      });
   };
-  submitData2 = (e) =>{
-    alert('Created');
-  }
-  resetData = () =>{
+  submitData2 = (e) => {
+    alert("Created");
+  };
+  resetData = () => {
     this.setState({
       userName: { name: "", message: "", op: "" },
       email: { name: "", message: "", op: "" },
@@ -232,124 +240,140 @@ class SignUpForm extends Component {
       password: { name: "", message: "", op: "" },
       confirmPassword: { name: "", message: "", op: "" },
       verifyInput: false,
-      res:{op:"",message:""}
-
-    })
-  }
+      res: { op: "", message: "" },
+    });
+  };
   render() {
     const color = { color: "red", padding: "17px", fontSize: "18px" };
     const mark = <label style={color}>*</label>;
     // const userName = this.state.userName;
-    let { userName, email, firstName,lastName, password, confirmPassword ,res} = this.state;
+    let {
+      userName,
+      email,
+      firstName,
+      lastName,
+      password,
+      confirmPassword,
+      res,
+    } = this.state;
     // let s = userName.message;
     return (
       <>
-      <Navbar />
-      <div id="index">
-        <div className="main">
-          <h2 className="heading">RegistrationForm</h2>
-          <span className={res.message}>{res.op}</span>
-          <form className="regForm" onSubmit={this.submitData}>
-            <div>
-              <div className="inputBox">
-                <input
-                  type="text"
-                  // className="userInput"
-                  id={userName.message}
-                  value={userName.name}
-                  onChange={this.validateUsername}
-                  required
-                />
-                <span>User Name{mark}</span>
+        <Navbar />
+        <div id="index">
+          <div className="main">
+            <h2 className="heading">RegistrationForm</h2>
+            <span className={res.message}>{res.op}</span>
+            <form className="regForm" onSubmit={this.submitData}>
+              <div>
+                <div className="inputBox">
+                  <input
+                    type="text"
+                    // className="userInput"
+                    id={userName.message}
+                    value={userName.name}
+                    onChange={this.validateUsername}
+                    required
+                  />
+                  <span>User Name{mark}</span>
+                </div>
+                <span className={userName.message}>{userName.op}</span>
               </div>
-              <span className={userName.message}>{userName.op}</span>
-            </div>
-            <div>
-              <div className="inputBox">
-                <input
-                  type="text"
-                  // className="userInput"
-                  id={email.message}
-                  value={email.name}
-                  onChange={this.validateEmail}
-                  required
-                />
-                <span>Email{mark}</span>
+              <div>
+                <div className="inputBox">
+                  <input
+                    type="text"
+                    // className="userInput"
+                    id={email.message}
+                    value={email.name}
+                    onChange={this.validateEmail}
+                    required
+                  />
+                  <span>Email{mark}</span>
+                </div>
+                <span className={email.message}>{email.op}</span>
               </div>
-              <span className={email.message}>{email.op}</span>
-            </div>
-            <div>
-              <div className="inputBox">
-                <input
-                  type="text"
-                  // className="userInput"
-                  id={firstName.message}
-                  value={firstName.name}
-                  onChange={this.validateFirstName}
-                  required="required"
-                />
-                <span>First Name{mark}</span>
+              <div>
+                <div className="inputBox">
+                  <input
+                    type="text"
+                    // className="userInput"
+                    id={firstName.message}
+                    value={firstName.name}
+                    onChange={this.validateFirstName}
+                    required="required"
+                  />
+                  <span>First Name{mark}</span>
+                </div>
+                <span className={firstName.message}>{firstName.op}</span>
               </div>
-              <span className={firstName.message}>{firstName.op}</span>
-            </div>
-            <div>
-              <div className="inputBox">
-                <input
-                  type="text"
-                  // className="userInput"
-                  id={lastName.message}
-                  value={lastName.name}
-                  onChange={this.validateLastName}
-                  required="required"
-                />
-                <span>Last Name{mark}</span>
+              <div>
+                <div className="inputBox">
+                  <input
+                    type="text"
+                    // className="userInput"
+                    id={lastName.message}
+                    value={lastName.name}
+                    onChange={this.validateLastName}
+                    required="required"
+                  />
+                  <span>Last Name{mark}</span>
+                </div>
+                <span className={lastName.message}>{lastName.op}</span>
               </div>
-              <span className={lastName.message}>{lastName.op}</span>
-            </div>
-            <div>
-              <div className="inputBox">
-                {/* <input type="password" id="hide" /> */}
-                <input
-                  type="password"
-                  className="pwd"
-                  id={password.message}
-                  value={password.name}
-                  onChange={this.validatePassword}
-                  required
-                />
-                <span>Password{mark}</span>
+              <div>
+                <div className="inputBox">
+                  {/* <input type="password" id="hide" /> */}
+                  <input
+                    type="password"
+                    className="pwd"
+                    id={password.message}
+                    value={password.name}
+                    onChange={this.validatePassword}
+                    required
+                  />
+                  <span>Password{mark}</span>
+                </div>
+                <span className={password.message}>{password.op}</span>
               </div>
-              <span className={password.message}>{password.op}</span>
-            </div>
-            <div>
-              <div className="inputBox2">
-                <input
-                  type="password"
-                  // className="userInput"
-                  id={confirmPassword.message}
-                  value={confirmPassword.name}
-                  onChange={this.validateConfirmPassword}
-                  required
-                />
-                <span>Confirm Password{mark}</span>
+              <div>
+                <div className="inputBox2">
+                  <input
+                    type="password"
+                    // className="userInput"
+                    id={confirmPassword.message}
+                    value={confirmPassword.name}
+                    onChange={this.validateConfirmPassword}
+                    required
+                  />
+                  <span>Confirm Password{mark}</span>
+                </div>
+                <span className={confirmPassword.message}>
+                  {confirmPassword.op}
+                </span>
               </div>
-              <span className={confirmPassword.message}>
-                {confirmPassword.op}
-              </span>
-            </div>
-            <div>
-              <div className="captchaClass">
-
-                <button type="reset" className="subbtn" onClick={this.resetData}>Reset</button>
-                <button type="submit" className="subbtn" disabled={this.validateInputs()}>
-                  Register
-                </button>
+              <div>
+                <div className="captchaClass">
+                  <button
+                    type="reset"
+                    className="subbtn"
+                    onClick={this.resetData}
+                  >
+                    Reset
+                  </button>
+                  <button
+                    type="submit"
+                    className="subbtn"
+                    disabled={this.validateInputs()}
+                  >
+                    Register
+                  </button>
+                </div>
               </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
-      </div>
-      <Footer />
+        <Footer />
       </>
     );
   }
